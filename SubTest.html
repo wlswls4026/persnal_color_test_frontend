@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>퍼스널컬러 테스트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            width: 500px;
+            margin: 0 auto;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+
+        select {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 3px;
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        input[type="text"] {
+            display: block;
+            width: 50%;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 3px;
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        button {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 15px;
+            background-color: #1b75bc;
+            color: #fff;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
+        .Sresult {
+            width: 500px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        @media only screen and (max-width: 600px) {
+            .Sresult {
+                width: 90%;
+            }
+
+            .recommend .color,
+            .avoid .color {
+                width: 30px;
+                height: 30px;
+                margin: 0 3px;
+            }
+        }
+
+        .palette {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .color {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 0 10px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .recommend {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .recommend p {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .avoid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .avoid p {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .recommend .color,
+        .avoid .color {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 50%;
+            margin-right: 5px;
+            transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+            cursor: pointer;
+        }
+
+
+        @media only screen and (max-width: 600px) {
+            form {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>무료 퍼스널컬러 테스트</h1>
+    <form>
+        <label>성별:</label>
+        <select id="gender" name="gender">
+            <option value="">선택하세요</option>
+            <option value="male">남성</option>
+            <option value="female">여성</option>
+        </select>
+
+        <label>머리색:</label>
+        <select id="hair" name="hair">
+            <option value="">선택하세요</option>
+            <option value="blond">금발</option>
+            <option value="brown">갈색</option>
+            <option value="black">검정</option>
+            <option value="red">빨간색</option>
+            <option value="gray">회색</option>
+            <option value="other">기타</option>
+        </select>
+
+        <label>눈색:</label>
+        <select id="eyes" name="eyes">
+            <option value="">선택하세요</option>
+            <option value="brown">갈색</option>
+            <option value="blue">파랑</option>
+            <option value="green">초록</option>
+            <option value="gray">회색</option>
+            <option value="other">기타</option>
+        </select>
+
+        <label>피부색:</label>
+        <select id="skin" name="skin">
+            <option value="">선택하세요</option>
+            <option value="light">밝은 피부</option>
+            <option value="medium">중간 피부</option>
+            <option value="dark">어두운 피부</option>
+            <option value="other">기타</option>
+        </select>
+
+
+        <button type="button" onclick="getResult()">결과 확인하기</button>
+    </form>
+    <div id="Sresult" class="Sresult" style="display:none;">
+        <p style="text-align: center;">당신의 퍼스널컬러 유형은 <strong style="color: #3ba363;" id="result-type"></strong>입니다.</p>
+        <div class="palette">
+            <p><strong style="color: #35465d; font-size: 20px;">베스트 컬러:</strong></p>
+            <div class="recommend" id="recommend-colors"></div>
+        </div>
+        <div class="palette">
+            <p><strong style="color: #35465d; font-size: 20px;">워스트 컬러:</strong></p>
+            <div class="avoid" id="avoid-colors"></div>
+        </div>
+
+        <p style="color: #3ba363; font-size: 20px;" id="result-desc"></p>
+
+    </div>
+    <script>
+        function getResult() {
+            // 사용자 정보 가져오기
+            var gender = document.getElementById("gender").value;
+            var hair = document.getElementById("hair").value;
+            var eyes = document.getElementById("eyes").value;
+            var skin = document.getElementById("skin").value;
+
+            // 입력값 유효성 검사
+            if (gender === "" || hair === "" || eyes === "" || skin === "") {
+                alert("입력값을 모두 입력해주세요.");
+                return;
+            }
+
+            // 퍼스널컬러 유형 확인
+            var resultType = ""; // 결과 유형
+            var resultDesc = ""; // 결과 설명
+            var recommendColors = []; // 추천 컬러 팔레트
+
+            var avoidColors = []; // 피하는 컬러
+
+            // 퍼스널컬러 유형에 따른 결과값 설정
+            if (skin === "light") {
+                resultType = "봄 웜톤";
+                resultDesc = "봄 웜톤의 당신은 밝고 화사한 색상을 잘 소화하는 사람입니다. 코럴, 민트, 페치, 화이트, 골드 등이 잘 어울립니다. 밝은 색의 옷과 골드 악세서리를 매치하는 것이 좋습니다. 꽃무늬, 레이스, 도트 등 여성스러운 패턴이 잘 어울립니다. 또, 밝고 화사한 색상의 메이크업을 추천합니다. 코럴 립스틱이나 피치 컬러의 블러셔를 추천합니다. 하지만 너무 어두운 색상(특히 블랙이나 진한 회색) 또는 너무 선명한 색상(특히 선명한 파랑, 선명한 보라 등)은 얼굴이 창백해 보이고, 활력이 떨어져 보일 수 있으니 주의하시길 추천드립니다.";
+                recommendColors = ['#FF7F50', '#92B8B1', '#FFD700'];
+                avoidColors = ['#000000', '#808080', '#462679'];
+            } else if (skin === "medium") {
+                if (eyes === "brown") {
+                    resultType = "가을 웜톤";
+                    resultDesc = "가을 웜톤의 당신은 깊이 있는 골든 톤의 색상이 잘 어울리는 사람입니다. 버건디, 머스타드, 카키, 초콜릿 브라운 등이 대표적입니다. 패션은 깊은 색의 옷과 골드 액세서리를 매치하는 것이 좋습니다. 천연 소재 느낌의 아이템이나 동물 프린트도 잘 어울립니다. 메이크업은 깊고 풍부한 색상의 메이크업을 추천합니다. 브라운 계열의 아이섀도우와 브릭 컬러의 립스틱을 추천합니다. 하지만 선명한 로열 블루, 핫 핑크, 라임 그린 같은 강렬한 쿨톤 색상은 자연스럽고 따듯한 가을 웜톤의 피부에 광택을 잃게 만들고 건조해 보이게 할 수 있으니 주의하시길 추천드립니다.";
+                    recommendColors = ['#F760C0C', '#ECD596', '#706845'];
+                    avoidColors = ['#4169E1', '#ED0086', '#32CD32'];
+                } else {
+                    resultType = "여름 쿨톤";
+                    resultDesc = "여름 쿨톤의 당신은 부드럽고 세련된 느낌의 파스텔 계열의 색상이 잘 어울리는 사람입니다. 특히, 파랑 계열, 보라, 라벤더, 연한 핑크 등이 대표적입니다. 패션은 블루톤의 옷과 실버 액세서리를 매치하는 것이 좋습니다. 패턴은 세련된 플로럴이나 수채화 같은 부드러운 느낌이 좋고 화장품은 파스텔 계열의 메이크업을 추천합니다 블루 베이스의 핑크 립스틱이나 블러셔를 추천합니다. 하지만 선명한 레드, 오랜지, 황금색 같은 강렬한 따듯한 색상은 피부 톤이 더욱 창백하고 피곤해 보일 수 있습니다. 특히, 노란색 계열을 피부색이 칙칙해 보일 수 있으니 주의하시길 추천드립니다.";
+                    recommendColors = ['#0067A3', '#E6E6FA', '#FFC0CB'];
+                    avoidColors = ['#FF0000', '#FF7F00', '#FFD400'];
+                }
+
+            } else if (skin === "dark") {
+                resultType = "겨울 쿨톤";
+                resultDesc = "겨울 쿨톤의 당신은 선명하고 강렬한 색상을 잘 소화하는 사람입니다. 진한 블루, 화이트, 블랙, 진한 보라 등이 잘 어울립니다. 패션은 강렬한 컬러의 옷과 실버 악세서리를 매치하는 것이 좋고 패턴은 그래픽 패턴이나 블록 패턴 등 강렬한 느낌이 좋습니다. 또, 선명하고 진한 색상의 메이크업을 추천합니다. 진한 레드 립스틱이나 플럼 컬러의 아이섀도우를 추천합니다. 하지만 연한 페일 핑크, 페일 노랑, 베이지 등 연한 색상은 선명한 특성을 가진 겨울 쿨톤에는 잘 맞지 않습니다. 또한, 레드브라운, 오렌지 등의 따듯한 색상도 피부 표현력을 잃게 만들 수 있으니 주의하시길 추천드립니다.";
+                recommendColors = ['#0067A3', '#FFFFFF', '#000000'];
+                avoidColors = ['#FFB6C1', '#E9EC69', '#F5F5DC'];
+            } else if (skin === "ebony") {
+                resultType = "겨울 쿨톤";
+                resultDesc = "겨울 쿨톤의 당신은 선명하고 강렬한 색상을 잘 소화하는 사람입니다. 진한 블루, 화이트, 블랙, 진한 보라 등이 잘 어울립니다. 패션은 강렬한 컬러의 옷과 실버 악세서리를 매치하는 것이 좋고 패턴은 그래픽 패턴이나 블록 패턴 등 강렬한 느낌이 좋습니다. 또, 선명하고 진한 색상의 메이크업을 추천합니다. 진한 레드 립스틱이나 플럼 컬러의 아이섀도우를 추천합니다. 하지만 연한 페일 핑크, 페일 노랑, 베이지 등 연한 색상은 선명한 특성을 가진 겨울 쿨톤에는 잘 맞지 않습니다. 또한, 레드브라운, 오렌지 등의 따듯한 색상도 피부 표현력을 잃게 만들 수 있으니 주의하시길 추천드립니다.";
+                recommendColors = ['#0067A3', '#FFFFFF', '#000000'];
+                avoidColors = ['#FFB6C1', '#E9EC69', '#F5F5DC'];
+            }
+
+
+            // 결과값 출력
+            document.getElementById("result-type").innerHTML = resultType;
+            document.getElementById("result-desc").innerHTML = resultDesc;
+
+            var recommendHtml = "";
+            for (var i = 0; i < recommendColors.length; i++) {
+                recommendHtml += "<div class='color' style='background-color:" + recommendColors[i] + "'></div>";
+            }
+            document.getElementById("recommend-colors").innerHTML = recommendHtml;
+
+            var avoidHtml = "";
+            for (var i = 0; i < avoidColors.length; i++) {
+                avoidHtml += "<div class='color' style='background-color:" + avoidColors[i] + "'></div>";
+            }
+            document.getElementById("avoid-colors").innerHTML = avoidHtml;
+
+
+            // 결과값 보이기
+            document.getElementById("Sresult").style.display = "block";
+        }
+    </script>
+
+
+    <html>
+
+    <head>
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+                background-color: #f2f2f2;
+                color: #333;
+            }
+
+            h1 {
+                text-align: center;
+                margin-top: 50px;
+            }
+
+            .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            input {
+                width: 50%;
+                padding: 10px;
+                margin-top: 20px;
+                font-size: 16px;
+                border: 2px solid #ccc;
+                border-radius: 5px;
+                outline: none;
+            }
+
+            button:hover {
+                background-color: #0d3f67;
+            }
+
+            /* page-loading */
+
+            #loading {
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                position: fixed;
+                display: block;
+                opacity: 0.6;
+                z-index: 99;
+                text-align: center;
+                transform: scale(0.3);
+            }
+
+            #loading>img {
+                position: absolute;
+                top: 40%;
+                left: 45%;
+                z-index: 100;
+            }
+
+            #loading>p {
+                position: absolute;
+                top: 57%;
+                left: 43%;
+                z-index: 101;
+            }
+
+
+
+            #result {
+                width: 80%;
+                margin: 30px auto;
+                padding: 30px;
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+                overflow-y: auto;
+                /* 세로 스크롤 생성 */
+                overflow-x: hidden;
+                /* 가로 스크롤 삭제 */
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                /* 답변 왼쪽 정렬 */
+                word-wrap: break-word;
+                /* 단어 단위로 줄바꿈 */
+                overflow-wrap: break-word;
+                /* 너무 긴 단어를 줄바꿈 */
+                justify-content: flex-end;
+                /* 메시지가 아래에서 시작 */
+                position: relative;
+                min-height: 500px;
+            }
+
+            .inputContainer {
+                position: absolute;
+                bottom: 10px;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+
+            .user,
+            .chatGPT {
+                padding: 10px;
+                border-radius: 20px;
+                margin-bottom: 30px;
+                width: fit-content;
+                max-width: 80%;
+            }
+
+            .user {
+                align-self: flex-end;
+                margin-bottom: 10px;
+                background-color: #1b75bc;
+                color: #fff;
+            }
+
+            .chatGPT {
+                align-self: flex-start;
+                margin-bottom: 50px;
+                background-color: #e4e4e4;
+                color: #000;
+            }
+
+            #input-container {
+                position: relative;
+            }
+
+            #input-icon {
+                position: absolute;
+                right: 21%;
+                /* 'left'를 'right'로 변경합니다 */
+                top: 58%;
+                transform: translateY(-50%);
+            }
+
+            #keywords {
+                padding-right: 50px;
+                /* 오른쪽 padding을 조정하여 아이콘과 텍스트가 겹치지 않게 합니다 */
+            }
+
+            /*
+    Set the color of the icon
+    */
+            svg path,
+            svg rect {
+                fill: #000;
+            }
+        </style>
+    </head>
+
+    <div id="overlay"></div>
+    <div class="container">
+
+        <h1>패션 AI</h1>
+        <div style="font-size: 24px;">무엇이든 질문해보세요!!</div>
+
+        <div id="result">
+            <div class="inputContainer">
+                <input type="text" id="keywords" name="keywords" placeholder="질문을 입력하세요..."
+                    onkeydown="handleKeyPress(event)" style="margin-right: 55px; width:50rem;" required />
+                <svg onclick="chatGPT()" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24"
+                    stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 mr-1" height="20px" width="20px"
+                    xmlns="http://www.w3.org/2000/svg" id="input-icon">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div
+            style="width: 100%;padding: 20px;background-color: #939393;text-align: center;color: #ffffff;font-family: Arial, sans-serif;border-top: 1px solid #ffffff;margin-top: 50px;">
+            Email: wlswls4026@naver.com <br>Copyright © 2023 퍼스널컬러 테스트 All rights reserved.
+        </div>
+    </footer>
+    <script>
+
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && document.getElementById('keywords').value.trim() !== '') {
+                event.preventDefault(); // Enter 키가 폼을 제출하는 것을 막습니다.
+                chatGPT();
+            }
+        }
+
+        $(document).ready(function () {
+            $('#loadinggpt').hide();
+        });
+
+        window.onload = function () {
+            // 페이지가 로드되면 버튼을 비활성화합니다.
+            document.getElementById('input-icon').style.pointerEvents = 'none';
+            document.getElementById('input-icon').style.opacity = '0.4';
+
+            document.getElementById('keywords').addEventListener('input', function () {
+                if (this.value.trim() === '') {
+                    // 입력 필드가 비어 있으면 버튼을 비활성화합니다.
+                    document.getElementById('input-icon').style.pointerEvents = 'none';
+                    document.getElementById('input-icon').style.opacity = '0.4';
+                } else {
+                    // 입력 필드에 내용이 있으면 버튼을 활성화합니다.
+                    document.getElementById('input-icon').style.pointerEvents = 'auto';
+                    document.getElementById('input-icon').style.opacity = '1';
+                }
+            });
+        }
+
+
+        function chatGPT() {
+            // Disable the button at the start of the function.
+            let button = document.getElementById('input-icon');
+            button.style.pointerEvents = 'none';
+            button.style.opacity = '0.4';
+
+            let inputField = document.getElementById('keywords');
+            inputField.disabled = true;
+
+            var keywords = inputField.value;
+
+            let result = document.getElementById('result');
+            let userQuestion = document.createElement('div');
+            userQuestion.className = 'user';
+            userQuestion.innerHTML = keywords;
+            result.appendChild(userQuestion);
+
+            // Create a chatGPT element and add it to the conversation
+            let chatGPTAnswer = document.createElement('div');
+            chatGPTAnswer.className = 'chatGPT';
+            chatGPTAnswer.innerHTML = '.'; // Initialize with greeting
+            result.appendChild(chatGPTAnswer);
+
+            // Start a loading animation with dots
+            let loadingDots = 1;
+            let loadingInterval = setInterval(() => {
+                chatGPTAnswer.innerHTML = '.'.repeat(loadingDots);
+                loadingDots = (loadingDots % 3) + 1;
+            }, 500);
+
+            // Clear the input field
+            document.getElementById('keywords').value = '';
+
+            axios.get('https://port-0-persnal-color-test-backend-k19y2kljn7acgx.sel4.cloudtype.app/?prompt=' + encodeURIComponent(keywords))
+                .then(response => {
+                    // Stop the loading animation and update the chatGPT element with the response
+                    clearInterval(loadingInterval);
+                    chatGPTAnswer.innerHTML = response.data.replace(/\. /g, '.\n');
+
+                    button.style.pointerEvents = 'auto';
+                    button.style.opacity = '0.4';
+                    inputField.disabled = false;
+                    inputField.focus();
+                    window.scrollTo(0, document.body.scrollHeight);
+                })
+                .catch(error => {
+                    console.error(error);
+                    clearInterval(loadingInterval); // Stop the loading animation in case of an error
+
+                    button.style.pointerEvents = 'auto';
+                    button.style.opacity = '0.4';
+                    inputField.disabled = false;
+                    inputField.focus();
+
+                    alert("서버에 오류가 발생했습니다 잠시후 다시 시도해주세요.")
+                });
+        }
+
+
+
+    </script>
+
+
+
+</body>
+
+
+<!-- Copyright (c) 2023 by Aurer (https://codepen.io/aurer/pen/ZEJxpO)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
+
+
+</html>
